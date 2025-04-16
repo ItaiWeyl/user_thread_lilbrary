@@ -1,0 +1,49 @@
+itai.weyl, dvirsarig
+Itai Weyl (209614205), Dvir Sarig (314829847)
+EX: 2
+
+FILES:
+
+
+REMARKS:
+
+ANSWERS:
+
+Q1:
+a)
+sigsetjmp saves the current stack context (including registers and program counter), so you can return to
+it later.
+siglongjmp jumps back to that saved context, like rewinding the program to the point where sigsetjmp was called.
+b)
+sigsetjmp can optionally save the current signal mask (set of blocked signals).
+If the mask is saved, siglongjmp restores it — this means it brings back the same blocked signals that were
+active during sigsetjmp.
+
+Q2:
+A general use of user-level threads:a program that needs to perform many calculations in parallel
+without any I/O. User-level threads are a good choice because they have low overhead — they
+are quick to create and switch between, and the program can manage them without involving the operating system,
+which saves time and resources.
+
+Q3:
+Advantages:
+* Creating a new process for each tab gives strong isolation. If one tab crashes
+(for example, due to a bug or a memory error), it only affects that process and not the entire browser.
+This makes the browser more stable.
+* Improves security. each process has its own memory and can’t directly access another tab’s data.
+
+Disadvantages:
+* Processes use more system resources than kernel-level threads. They require more memory, and switching
+between them is slower.
+* Also, if tabs need to share data (like cookies or settings), communication
+between processes is more complex and slower than sharing between threads.
+
+Q4:
+Keyboard: When you type the kill command and press Enter, the keyboard sends an interrupt to the OS to handle
+the input.
+Shell: The shell (like bash) processes your command and makes a system call to send a signal to the target
+process.
+OS: The OS handles the system call, finds the target process (Shotwell), and delivers the
+SIGTERM signal to it.
+Application (process): When Shotwell gets the SIGTERM signal, the OS checks if it used sigaction to
+set a handler. If it did, it runs custom code. if not, it just quits by default.
