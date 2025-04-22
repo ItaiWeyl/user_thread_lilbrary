@@ -1,11 +1,10 @@
-#include "Thread.h"
+#include "thread.h"
 #include <cstdlib>
 #include <iostream>
-#include <unistd.h>
 
 // Translate address exactly like in demo_jmp.c
 address_t Thread::translate_address(address_t addr) {
-#ifdef _x86_64_
+#ifdef __x86_64__
     address_t ret;
     asm volatile("xor    %%fs:0x30,%0\n"
                  "rol    $0x11,%0\n"
@@ -25,42 +24,38 @@ address_t Thread::translate_address(address_t addr) {
 Thread::Thread(int id, void (*entryPoint)()):
     id(id), state(READY), quantumCount(0), stack(nullptr)
 {
-    if (id == 0) {
-        // Main thread: does not need stack or manual context setup
-        return;
-    }
+  if (sigsetjmp(env, 1) != 0) {
+    return; // Should not happen during construction
+  }
 
-    stack = new char[STACK_SIZE];
-    if (stack == nullptr) {
-        std::cerr << "system error: cannot allocate stack\n";
-        exit(1);
-    }
+  if (id == 0) {
+      // Main thread: does not need stack or manual context setup
+      return;
+  }
 
-    if (sigsetjmp(env, 1) != 0) {
-        return; // Should not happen during construction
-    }
+  stack = new(std::nothrow) char[STACK_SIZE];
+  if (stack == nullptr) {
+    std::cerr << "system error: cannot allocate stack\n";
+    exit(1);
+  }
 
-    // Set initial stack pointer and program counter
-    address_t sp = (address_t)(stack + STACK_SIZE - sizeof(address_t));
-    address_t pc = (address_t)(entryPoint);
+  // Set initial stack pointer and program counter
+  auto sp = (address_t)(stack + STACK_SIZE - sizeof(address_t));
+  auto pc = (address_t)(entryPoint);
 
-    sp = translate_address(sp);
-    pc = translate_address(pc);
+  sp = translate_address(sp);
+  pc = translate_address(pc);
 
-    env->__jmpbuf[JB_SP] = sp;
-    env->__jmpbuf[JB_PC] = pc;
+  env->__jmpbuf[JB_SP] = sp;
+  env->__jmpbuf[JB_PC] = pc;
 
-    sigemptyset(&env->__saved_mask);
+  sigemptyset(&env->__saved_mask);
 }
 
 Thread::~Thread() {
     if (id != 0 && stack != nullptr) {
         delete[] stack;
     }
-}
-
-int Thread::getId() const {
-    return id;
 }
 
 ThreadState Thread::getState() const {

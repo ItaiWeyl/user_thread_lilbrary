@@ -6,15 +6,16 @@
 
 #define STACK_SIZE 4096
 
-#ifdef _x86_64_
-    #define JB_SP 6
-    #define JB_PC 7
-    typedef unsigned long address_t;
+#ifdef __x86_64__
+#define JB_SP 6
+#define JB_PC 7
+typedef unsigned long address_t;
 #else
 #define JB_SP 4
-#define JB_PC 5
-typedef unsigned int address_t;
+    #define JB_PC 5
+    typedef unsigned int address_t;
 #endif
+
 
 // Thread states
 enum ThreadState { READY, RUNNING, BLOCKED };
@@ -34,8 +35,6 @@ public:
     Thread(int id, void (*entryPoint)());
 
     ~Thread();
-
-    int getId() const;
 
     ThreadState getState() const;
 
