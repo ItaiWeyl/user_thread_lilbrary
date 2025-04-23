@@ -46,6 +46,7 @@ class Scheduler {
   static int getTid();
   static int getTotalQuantums();
   static int getQuantums(int tid);
+  static int pendingDeletionTid;
 };
 
 #endif //_SCHEDULER_H_
