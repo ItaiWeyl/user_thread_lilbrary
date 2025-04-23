@@ -20,11 +20,6 @@ class Scheduler {
   static void wakeSleepingThreads();
   static void blockTimerSignal();
   static void unblockTimerSignal();
-  static void printThreadStatus(const std::unordered_map<int, Thread*>& threads,
-                                    const std::queue<int>& readyQueue,
-                                    const std::unordered_map<int, int>& sleepingThreads,
-                                    int currentTid,
-                                    int totalQuantums);
 
   static int quantumUsecs;
   static int totalQuantums;
@@ -47,6 +42,7 @@ class Scheduler {
   static int getTotalQuantums();
   static int getQuantums(int tid);
   static int pendingDeletionTid;
+  static Thread *getThreadById (int tid);
 };
 
 #endif //_SCHEDULER_H_

@@ -24,9 +24,7 @@ address_t Thread::translate_address(address_t addr) {
 Thread::Thread(int id, void (*entryPoint)()):
     id(id), state(READY), quantumCount(0), stack(nullptr)
 {
-  if (sigsetjmp(env, 1) != 0) {
-    return; // Should not happen during construction
-  }
+  sigsetjmp(env, 1);
 
   if (id == 0) {
       // Main thread: does not need stack or manual context setup
@@ -43,11 +41,8 @@ Thread::Thread(int id, void (*entryPoint)()):
   auto sp = (address_t)(stack + STACK_SIZE - sizeof(address_t));
   auto pc = (address_t)(entryPoint);
 
-  sp = translate_address(sp);
-  pc = translate_address(pc);
-
-  env->__jmpbuf[JB_SP] = sp;
-  env->__jmpbuf[JB_PC] = pc;
+  env->__jmpbuf[JB_SP] = translate_address(sp);
+  env->__jmpbuf[JB_PC] = translate_address(pc);
 
   sigemptyset(&env->__saved_mask);
 }
