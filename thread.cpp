@@ -21,30 +21,30 @@ address_t Thread::translate_address(address_t addr) {
 #endif
 }
 
-Thread::Thread(int id, void (*entryPoint)()):
-    id(id), state(READY), quantumCount(0), stack(nullptr)
+Thread::Thread(const int id, void (*entryPoint)()):
+    id(id), state(READY), stack(nullptr), quantumCount(0)
 {
-  sigsetjmp(env, 1);
+    sigsetjmp(env, 1);
 
-  if (id == 0) {
-      // Main thread: does not need stack or manual context setup
-      return;
-  }
+    if (id == 0) {
+        // Main thread: does not need stack or manual context setup
+        return;
+    }
 
-  stack = new(std::nothrow) char[STACK_SIZE];
-  if (stack == nullptr) {
-    std::cerr << "system error: cannot allocate stack\n";
-    exit(1);
-  }
+    stack = new(std::nothrow) char[STACK_SIZE];
+    if (stack == nullptr) {
+        std::cerr << "system error: cannot allocate stack\n";
+        exit(1);
+    }
 
-  // Set initial stack pointer and program counter
-  auto sp = (address_t)(stack + STACK_SIZE - sizeof(address_t));
-  auto pc = (address_t)(entryPoint);
+    // Set initial stack pointer and program counter
+    auto sp = (address_t)(stack + STACK_SIZE - sizeof(address_t));
+    auto pc = (address_t)(entryPoint);
 
-  env->__jmpbuf[JB_SP] = translate_address(sp);
-  env->__jmpbuf[JB_PC] = translate_address(pc);
+    env->__jmpbuf[JB_SP] = translate_address(sp);
+    env->__jmpbuf[JB_PC] = translate_address(pc);
 
-  sigemptyset(&env->__saved_mask);
+    sigemptyset(&env->__saved_mask);
 }
 
 Thread::~Thread() {

@@ -6,7 +6,6 @@
 #include "uthreads.h"
 #include <iostream>
 #include <sys/time.h>
-#include <signal.h>
 
 // Static variables initialization
 int Scheduler::quantumUsecs = 0;
@@ -77,7 +76,7 @@ void Scheduler::setupSignalHandler() {
 }
 
 void Scheduler::setupTimer() {
-  struct itimerval timer;
+  struct itimerval timer{};
   timer.it_value.tv_sec = quantumUsecs / 1000000;
   timer.it_value.tv_usec = quantumUsecs % 1000000;
   timer.it_interval.tv_sec = timer.it_value.tv_sec;
@@ -158,9 +157,11 @@ int Scheduler::spawn(void (*entryPoint)()) {
 
 int Scheduler::terminate(int tid) {
   blockTimerSignal();
-  if (tid == 0) {
-    for (auto& [_, thread] : threads) {
-      delete thread;
+  if (tid == 0)
+  {
+    for (auto & thread : threads)
+    {
+      delete thread.second;
     }
     threads.clear();
     unblockTimerSignal();
@@ -179,8 +180,8 @@ int Scheduler::terminate(int tid) {
     return 0;
   }
 
-  // tid == currentTid
-  if (readyQueue.empty()) {//No option to terminate without other thread ready
+  //No option to terminate without other thread ready
+  if (readyQueue.empty()) {
     std::cerr << "thread library error: no threads left to run after termination\n";
     unblockTimerSignal();
     return -1;
@@ -188,6 +189,7 @@ int Scheduler::terminate(int tid) {
   pendingDeletionTid = currentTid;
   unblockTimerSignal();
   doContextSwitch();
+  return 0;
 }
 
 int Scheduler::block(int tid) {
@@ -327,6 +329,3 @@ int Scheduler::getQuantums(int tid) {
   }
   return threads[tid]->getQuantumCount();
 }
-
-
-

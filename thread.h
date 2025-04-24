@@ -3,6 +3,8 @@
 
 #include <setjmp.h>
 #include <signal.h>
+#include <cassert>    // or <assert.h>
+
 
 #define STACK_SIZE 4096
 
@@ -12,8 +14,8 @@
 typedef unsigned long address_t;
 #else
 #define JB_SP 4
-    #define JB_PC 5
-    typedef unsigned int address_t;
+#define JB_PC 5
+typedef unsigned int address_t;
 #endif
 
 
@@ -25,7 +27,7 @@ class Thread {
 private:
     int id;
     ThreadState state;
-    sigjmp_buf env;
+    sigjmp_buf env{};
     char* stack;
     int quantumCount;
 
