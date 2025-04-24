@@ -129,53 +129,53 @@ Ex2/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ex2.dir/build.make CMakeFiles/Ex2.dir/build
 .PHONY : Ex2/fast
 
-demo_singInt_handler.o: demo_singInt_handler.c.o
-.PHONY : demo_singInt_handler.o
+scheduler.o: scheduler.cpp.o
+.PHONY : scheduler.o
 
 # target to build an object file
-demo_singInt_handler.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ex2.dir/build.make CMakeFiles/Ex2.dir/demo_singInt_handler.c.o
-.PHONY : demo_singInt_handler.c.o
+scheduler.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ex2.dir/build.make CMakeFiles/Ex2.dir/scheduler.cpp.o
+.PHONY : scheduler.cpp.o
 
-demo_singInt_handler.i: demo_singInt_handler.c.i
-.PHONY : demo_singInt_handler.i
+scheduler.i: scheduler.cpp.i
+.PHONY : scheduler.i
 
 # target to preprocess a source file
-demo_singInt_handler.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ex2.dir/build.make CMakeFiles/Ex2.dir/demo_singInt_handler.c.i
-.PHONY : demo_singInt_handler.c.i
+scheduler.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ex2.dir/build.make CMakeFiles/Ex2.dir/scheduler.cpp.i
+.PHONY : scheduler.cpp.i
 
-demo_singInt_handler.s: demo_singInt_handler.c.s
-.PHONY : demo_singInt_handler.s
+scheduler.s: scheduler.cpp.s
+.PHONY : scheduler.s
 
 # target to generate assembly for a file
-demo_singInt_handler.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ex2.dir/build.make CMakeFiles/Ex2.dir/demo_singInt_handler.c.s
-.PHONY : demo_singInt_handler.c.s
+scheduler.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ex2.dir/build.make CMakeFiles/Ex2.dir/scheduler.cpp.s
+.PHONY : scheduler.cpp.s
 
-main.o: main.cpp.o
-.PHONY : main.o
+test0_sanity.o: test0_sanity.cpp.o
+.PHONY : test0_sanity.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ex2.dir/build.make CMakeFiles/Ex2.dir/main.cpp.o
-.PHONY : main.cpp.o
+test0_sanity.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ex2.dir/build.make CMakeFiles/Ex2.dir/test0_sanity.cpp.o
+.PHONY : test0_sanity.cpp.o
 
-main.i: main.cpp.i
-.PHONY : main.i
+test0_sanity.i: test0_sanity.cpp.i
+.PHONY : test0_sanity.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ex2.dir/build.make CMakeFiles/Ex2.dir/main.cpp.i
-.PHONY : main.cpp.i
+test0_sanity.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ex2.dir/build.make CMakeFiles/Ex2.dir/test0_sanity.cpp.i
+.PHONY : test0_sanity.cpp.i
 
-main.s: main.cpp.s
-.PHONY : main.s
+test0_sanity.s: test0_sanity.cpp.s
+.PHONY : test0_sanity.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ex2.dir/build.make CMakeFiles/Ex2.dir/main.cpp.s
-.PHONY : main.cpp.s
+test0_sanity.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ex2.dir/build.make CMakeFiles/Ex2.dir/test0_sanity.cpp.s
+.PHONY : test0_sanity.cpp.s
 
 thread.o: thread.cpp.o
 .PHONY : thread.o
@@ -201,6 +201,30 @@ thread.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ex2.dir/build.make CMakeFiles/Ex2.dir/thread.cpp.s
 .PHONY : thread.cpp.s
 
+uthreads.o: uthreads.cpp.o
+.PHONY : uthreads.o
+
+# target to build an object file
+uthreads.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ex2.dir/build.make CMakeFiles/Ex2.dir/uthreads.cpp.o
+.PHONY : uthreads.cpp.o
+
+uthreads.i: uthreads.cpp.i
+.PHONY : uthreads.i
+
+# target to preprocess a source file
+uthreads.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ex2.dir/build.make CMakeFiles/Ex2.dir/uthreads.cpp.i
+.PHONY : uthreads.cpp.i
+
+uthreads.s: uthreads.cpp.s
+.PHONY : uthreads.s
+
+# target to generate assembly for a file
+uthreads.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ex2.dir/build.make CMakeFiles/Ex2.dir/uthreads.cpp.s
+.PHONY : uthreads.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -210,15 +234,18 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... Ex2"
-	@echo "... demo_singInt_handler.o"
-	@echo "... demo_singInt_handler.i"
-	@echo "... demo_singInt_handler.s"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... scheduler.o"
+	@echo "... scheduler.i"
+	@echo "... scheduler.s"
+	@echo "... test0_sanity.o"
+	@echo "... test0_sanity.i"
+	@echo "... test0_sanity.s"
 	@echo "... thread.o"
 	@echo "... thread.i"
 	@echo "... thread.s"
+	@echo "... uthreads.o"
+	@echo "... uthreads.i"
+	@echo "... uthreads.s"
 .PHONY : help
 
 
