@@ -3,8 +3,7 @@ project(Ex2)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(Ex2 main.cpp
-        demo_singInt_handler.c
-        uthreads.h
+add_executable(Ex2 test0_sanity.cpp
         thread.cpp
-        thread.h)
+        scheduler.cpp
+        uthreads.cpp)

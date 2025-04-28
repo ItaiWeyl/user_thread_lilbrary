@@ -1,0 +1,3 @@
+/mnt/c/Users/USER/Desktop/OS/Ex2/cmake-build-debug/CMakeFiles/Ex2.dir
+/mnt/c/Users/USER/Desktop/OS/Ex2/cmake-build-debug/CMakeFiles/edit_cache.dir
+/mnt/c/Users/USER/Desktop/OS/Ex2/cmake-build-debug/CMakeFiles/rebuild_cache.dir

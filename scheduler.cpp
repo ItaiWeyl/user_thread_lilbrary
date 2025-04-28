@@ -6,8 +6,8 @@
 #include "uthreads.h"
 #include <iostream>
 #include <sys/time.h>
-#include <signal.h>
 
+Scheduler scheduler;
 // Static variables initialization
 int Scheduler::quantumUsecs = 0;
 int Scheduler::totalQuantums = 0;
@@ -17,8 +17,9 @@ std::unordered_map<int, Thread*> Scheduler::threads;
 std::queue<int> Scheduler::readyQueue;
 std::unordered_map<int, int> Scheduler::sleepingThreads;
 
-// Implementation of the private functions
+//************************* Implementation of the private functions ****************************************************
 void Scheduler::removeFromReadyQueue(int tid) {
+  blockTimerSignal();
   std::queue<int> tempQueue;
   while (!readyQueue.empty()) {
     int current = readyQueue.front();
@@ -28,6 +29,7 @@ void Scheduler::removeFromReadyQueue(int tid) {
     }
   }
   readyQueue = tempQueue;
+  unblockTimerSignal();
 }
 
 int Scheduler::nextAvailableTid() {
@@ -40,27 +42,30 @@ int Scheduler::nextAvailableTid() {
 }
 
 void Scheduler::wakeSleepingThreads() {
-  for (auto it = sleepingThreads.begin(); it != sleepingThreads.end(); ) {
+    auto it = sleepingThreads.begin();
+    for ( ;it != sleepingThreads.end(); ) {
     if (totalQuantums >= it->second) {
       int tid = it->first;
-      threads[tid]->setState(READY);
-      readyQueue.push(tid);
+      if (!threads[tid]->isUserBlocked()) {
+        threads[tid]->setState(READY);
+        readyQueue.push(tid);
+      }
       it = sleepingThreads.erase(it);
     } else {
       ++it;
     }
-  }
+    }
 }
+
 
 void Scheduler::timerHandler(int sig) {
-  wakeSleepingThreads();
+    blockTimerSignal();
+    wakeSleepingThreads();
 
-  if (currentTid != pendingDeletionTid) {
-    threads[currentTid]->setState(READY);
-    readyQueue.push(currentTid);
-  }
-  doContextSwitch();
+    unblockTimerSignal();
+    doContextSwitch();
 }
+
 
 void Scheduler::setupSignalHandler() {
   struct sigaction sa = {};\
@@ -77,7 +82,7 @@ void Scheduler::setupSignalHandler() {
 }
 
 void Scheduler::setupTimer() {
-  struct itimerval timer;
+  struct itimerval timer{};
   timer.it_value.tv_sec = quantumUsecs / 1000000;
   timer.it_value.tv_usec = quantumUsecs % 1000000;
   timer.it_interval.tv_sec = timer.it_value.tv_sec;
@@ -121,7 +126,7 @@ void Scheduler::unblockTimerSignal() {
   }
 }
 
-// // Implementation of the Scheduler API
+// **************************** Implementation of the Scheduler API ****************************************************
 int Scheduler::init(int quantum_usecs) {
   quantumUsecs = quantum_usecs;
 
@@ -156,53 +161,64 @@ int Scheduler::spawn(void (*entryPoint)()) {
   return tid;
 }
 
+
+
 int Scheduler::terminate(int tid) {
-  blockTimerSignal();
-  if (tid == 0) {
-    for (auto& [_, thread] : threads) {
-      delete thread;
+    blockTimerSignal();
+
+    if (tid == 0)
+    {
+        for (auto & thread : threads)
+        {
+            delete thread.second;
+        }
+        threads.clear();
+        unblockTimerSignal();
+        exit(0);
     }
-    threads.clear();
-    unblockTimerSignal();
-    exit(0);
-  }
 
-  if (threads[tid]->getState() == READY) {
-    removeFromReadyQueue(tid);
-  }
+    if (threads[tid]->getState() == READY) {
+        removeFromReadyQueue(tid);
+    }
 
-  if (tid != currentTid) {
-    sleepingThreads.erase(tid);
-    delete threads[tid];
-    threads.erase(tid);
-    unblockTimerSignal();
+    if (tid != currentTid) {
+        sleepingThreads.erase(tid);
+        delete threads[tid];
+        threads.erase(tid);
+        unblockTimerSignal();
+        return 0;
+    }
+
+
+    if (readyQueue.empty()) {
+        // Debug: No threads left to run
+        std::cerr << "thread library error: no threads left to run after termination\n";
+        unblockTimerSignal();
+        return -1;
+    }
+
+    pendingDeletionTid = currentTid;
+    threads[pendingDeletionTid]->setState(READY);
+    doContextSwitch();
     return 0;
-  }
-
-  // tid == currentTid
-  if (readyQueue.empty()) {//No option to terminate without other thread ready
-    std::cerr << "thread library error: no threads left to run after termination\n";
-    unblockTimerSignal();
-    return -1;
-  }
-  pendingDeletionTid = currentTid;
-  unblockTimerSignal();
-  doContextSwitch();
 }
 
 int Scheduler::block(int tid) {
   Thread* thread = threads[tid];
   ThreadState state = thread->getState();
 
-  if (state == BLOCKED) {
-    return 0; // Already blocked
+  if (thread->isUserBlocked()) {
+    return 0; // Already blocked by user
   }
 
-  if (state == READY) {
+  if (state == READY || state == BLOCKED) {
     blockTimerSignal();
-    // Remove from ready queue
-    removeFromReadyQueue(tid);
+    // Remove from ready queue if in it
+    if (state == READY){
+        removeFromReadyQueue(tid);
+    }
     thread->setState(BLOCKED);
+    thread->setBlockFlag(true);
     unblockTimerSignal();
     return 0;
   }
@@ -217,8 +233,7 @@ int Scheduler::block(int tid) {
       unblockTimerSignal();
       return -1;
     }
-
-    unblockTimerSignal();
+    thread->setBlockFlag(true);
     doContextSwitch();
     return 0;
   }
@@ -240,22 +255,17 @@ int Scheduler::resume(int tid) {
   }
 
   blockTimerSignal();
-  // If the thread is also sleeping, only wake it if its sleep time has passed
+  // If the thread is also sleeping, only change blocked flag
   if (sleepingThreads.count(tid) > 0) {
-    if (totalQuantums < sleepingThreads[tid]) {
-      // Sleep time has not passed yet, keep it blocked
-      unblockTimerSignal();
-      return 0;
-    } else {
-      // Sleep time has passed, remove from sleepingThreads
-      sleepingThreads.erase(tid);
-    }
+      // Sleep time has not passed yet, keep it blocked but switch the flag
+    thread->setBlockFlag(false);
+    unblockTimerSignal();
+    return 0;
   }
 
   // Move the thread to READY state and push it to the ready queue
   thread->setState(READY);
   readyQueue.push(tid);
-
   unblockTimerSignal();
   return 0;
 }
@@ -274,38 +284,45 @@ int Scheduler::sleep(int numQuantums) {
     return -1;
   }
 
-  unblockTimerSignal();
   doContextSwitch();
   return 0;
 }
 
+
 void Scheduler::doContextSwitch() {
-  blockTimerSignal();
+    blockTimerSignal();
 
-  // Save the current thread's environment
-  int ret_val = sigsetjmp(threads[currentTid]->getEnv(), 1);
-  if (ret_val != 0) {
-    // Returning to this thread
-    if (pendingDeletionTid != -1) {
-      delete threads[pendingDeletionTid];
-      threads.erase(pendingDeletionTid);
-      pendingDeletionTid = -1;
+    if (currentTid != pendingDeletionTid && threads.size() > 1) {
+        threads[currentTid]->setState(READY);
+        readyQueue.push(currentTid);
     }
-    unblockTimerSignal();
-    return;
-  }
 
-  int nextTid = readyQueue.front();
-  readyQueue.pop();
-  currentTid = nextTid;
-  threads[currentTid]->setState(RUNNING);
-  threads[currentTid]->incrementQuantumCount();
-  totalQuantums++;
+    // Save the current thread's environment
+    int ret_val = sigsetjmp(threads[currentTid]->getEnv(), 1);
+    if (ret_val != 0) {
+        // Returning to this thread
+        if (pendingDeletionTid != -1) {
+            delete threads[pendingDeletionTid];
+            threads.erase(pendingDeletionTid);
+            pendingDeletionTid = -1;
+        }
+        unblockTimerSignal();
+        return;
+    }
 
-  setupTimer();
-  unblockTimerSignal();
-  siglongjmp(threads[currentTid]->getEnv(), 1);
+    if (!readyQueue.empty()){
+        int nextTid = readyQueue.front();
+        readyQueue.pop();
+        currentTid = nextTid;
+        threads[currentTid]->setState(RUNNING);
+    }
+    threads[currentTid]->incrementQuantumCount();
+    totalQuantums++;
+
+    setupTimer();
+    siglongjmp(threads[currentTid]->getEnv(), 1);
 }
+
 
 int Scheduler::getTid() {
   return currentTid;
@@ -321,12 +338,59 @@ int Scheduler::getTotalQuantums() {
 }
 
 int Scheduler::getQuantums(int tid) {
-  if (threads.count(tid) == 0) {
-    std::cerr << "thread library error: invalid tid" << std::endl;
-    return -1;
-  }
-  return threads[tid]->getQuantumCount();
+    blockTimerSignal();
+    if (threads.count(tid) == 0) {
+        std::cerr << "thread library error: invalid tid" << std::endl;
+        return -1;
+      }
+    unblockTimerSignal();
+    return threads[tid]->getQuantumCount();
 }
 
 
+
+void Scheduler::debugPrintThreads()
+{
+    std::cout << "=== THREADS REGISTERS DEBUG INFO ===" << std::endl;
+    for (const auto& [tid, thread] : threads)
+    {
+        std::cout << "Thread ID: " << tid << ", ";
+
+        address_t sp = thread->getEnv()->__jmpbuf[JB_SP];
+        address_t pc = thread->getEnv()->__jmpbuf[JB_PC];
+
+        std::cout << "SP: 0x" << std::hex << sp << ", ";
+        std::cout << "PC: 0x" << std::hex << pc << ", ";
+
+        std::cout << "State: ";
+
+        switch (thread->getState())
+        {
+            case READY:
+                std::cout << "READY";
+                break;
+            case RUNNING:
+                std::cout << "RUNNING";
+                break;
+            case BLOCKED:
+                std::cout << "BLOCKED";
+                break;
+            default:
+                std::cout << "UNKNOWN";
+                break;
+        }
+
+        std::cout << ", Quantums: " << std::dec << thread->getQuantumCount() << std::endl;
+    }
+    // Now print the readyQueue contents
+    std::cout << "--- Ready Queue ---" << std::endl;
+    std::queue<int> tempQueue = readyQueue; // copy it so we don't destroy the original
+    while (!tempQueue.empty())
+    {
+        std::cout << tempQueue.front() << " ";
+        tempQueue.pop();
+    }
+    std::cout << std::endl;
+    std::cout << "====================================" << std::endl;
+}
 
