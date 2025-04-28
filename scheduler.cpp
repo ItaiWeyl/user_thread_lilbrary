@@ -57,17 +57,6 @@ void Scheduler::wakeSleepingThreads() {
     }
 }
 
-//void Scheduler::timerHandler(int sig) {
-//    blockTimerSignal();
-//    wakeSleepingThreads();
-//
-//  if (currentTid != pendingDeletionTid && threads.size() > 1) {
-//    threads[currentTid]->setState(READY);
-//    readyQueue.push(currentTid);
-//  }
-//  unblockTimerSignal();
-//  doContextSwitch();
-//}
 
 void Scheduler::timerHandler(int sig) {
     blockTimerSignal();
@@ -172,41 +161,7 @@ int Scheduler::spawn(void (*entryPoint)()) {
   return tid;
 }
 
-//int Scheduler::terminate(int tid) {
-//  blockTimerSignal();
-//  if (tid == 0)
-//  {
-//    for (auto & thread : threads)
-//    {
-//      delete thread.second;
-//    }
-//    threads.clear();
-//    unblockTimerSignal();
-//    exit(0);
-//  }
-//
-//  if (threads[tid]->getState() == READY) {
-//    removeFromReadyQueue(tid);
-//  }
-//
-//  if (tid != currentTid) {
-//    sleepingThreads.erase(tid);
-//    delete threads[tid];
-//    threads.erase(tid);
-//    unblockTimerSignal();
-//    return 0;
-//  }
-//
-//  //No option to terminate without other thread ready
-//  if (readyQueue.empty()) {
-//    std::cerr << "thread library error: no threads left to run after termination\n";
-//    unblockTimerSignal();
-//    return -1;
-//  }
-//  pendingDeletionTid = currentTid;
-//  doContextSwitch();
-//  return 0;
-//}
+
 
 int Scheduler::terminate(int tid) {
     blockTimerSignal();
@@ -333,36 +288,6 @@ int Scheduler::sleep(int numQuantums) {
   return 0;
 }
 
-//void Scheduler::doContextSwitch() {
-//  blockTimerSignal();
-//
-//  // Save the current thread's environment
-//  int ret_val = sigsetjmp(threads[currentTid]->getEnv(), 1);
-//  if (ret_val != 0) {
-//    // Returning to this thread
-//    if (pendingDeletionTid != -1) {
-//        if (pendingDeletionTid == 2){
-//            debugPrintThreads();
-//        }
-//        std::cout << "[DEBUG] Deleting thread " << pendingDeletionTid << std::endl;
-//        delete threads[pendingDeletionTid];
-//        threads.erase(pendingDeletionTid);
-//        pendingDeletionTid = -1;
-//    }
-//    unblockTimerSignal();
-//    return;
-//  }
-//
-//  int nextTid = readyQueue.front();
-//  readyQueue.pop();
-//  currentTid = nextTid;
-//  threads[currentTid]->setState(RUNNING);
-//  threads[currentTid]->incrementQuantumCount();
-//  totalQuantums++;
-//
-//  setupTimer();
-//  siglongjmp(threads[currentTid]->getEnv(), 1);
-//}
 
 void Scheduler::doContextSwitch() {
     blockTimerSignal();
