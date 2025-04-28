@@ -5,11 +5,9 @@
 #ifndef _SCHEDULER_H_
 #define _SCHEDULER_H_
 
-
 #include "thread.h"
 #include <unordered_map>
 #include <queue>
-#include <signal.h>
 
 class Scheduler {
 private:
@@ -43,6 +41,8 @@ public:
     static int getQuantums(int tid);
     static int pendingDeletionTid;
     static Thread *getThreadById (int tid);
+
+    static void debugPrintThreads();
 };
 
 #endif //_SCHEDULER_H_

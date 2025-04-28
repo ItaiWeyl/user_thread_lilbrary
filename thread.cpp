@@ -21,13 +21,11 @@ address_t Thread::translate_address(address_t addr) {
 #endif
 }
 
-Thread::Thread(const int id, void (*entryPoint)()):
-    id(id), state(READY), stack(nullptr), quantumCount(0)
+Thread::Thread(int id, void (*entryPoint)()) :
+    id(id), state(READY), quantumCount(0), stack(nullptr), didUserBlock(false)
 {
-    sigsetjmp(env, 1);
-
     if (id == 0) {
-        // Main thread: does not need stack or manual context setup
+        // Main thread: no need to set up stack or context manually
         return;
     }
 
@@ -37,14 +35,16 @@ Thread::Thread(const int id, void (*entryPoint)()):
         exit(1);
     }
 
-    // Set initial stack pointer and program counter
-    auto sp = (address_t)(stack + STACK_SIZE - sizeof(address_t));
-    auto pc = (address_t)(entryPoint);
+    char* sp_ptr = stack + STACK_SIZE - sizeof(address_t);
+    address_t sp = (address_t)(sp_ptr);
+    address_t pc = (address_t)(entryPoint);
 
-    env->__jmpbuf[JB_SP] = translate_address(sp);
-    env->__jmpbuf[JB_PC] = translate_address(pc);
 
-    sigemptyset(&env->__saved_mask);
+    if (sigsetjmp(env, 1) == 0) {
+        env->__jmpbuf[JB_SP] = translate_address(sp);
+        env->__jmpbuf[JB_PC] = translate_address(pc);
+        sigemptyset(&env->__saved_mask);
+    }
 }
 
 Thread::~Thread() {
@@ -71,4 +71,12 @@ int Thread::getQuantumCount() const {
 
 void Thread::incrementQuantumCount() {
     quantumCount++;
+}
+
+bool Thread::isUserBlocked()const{
+    return didUserBlock;
+}
+
+void Thread::setBlockFlag(const bool flag) {
+    didUserBlock = flag;
 }

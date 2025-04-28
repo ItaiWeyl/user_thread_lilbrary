@@ -25,11 +25,12 @@ enum ThreadState { READY, RUNNING, BLOCKED };
 class Thread {
 
 private:
+    sigjmp_buf env{};
     int id;
     ThreadState state;
-    sigjmp_buf env{};
     char* stack;
     int quantumCount;
+    bool didUserBlock;
 
     static address_t translate_address(address_t addr);
 
@@ -47,6 +48,11 @@ public:
     int getQuantumCount() const;
 
     void incrementQuantumCount();
+
+    bool isUserBlocked() const;
+
+    void setBlockFlag(bool shouldSleep);
+
 };
 
 #endif // THREAD_H
