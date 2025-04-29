@@ -3,6 +3,8 @@
 
 #include <setjmp.h>
 #include <signal.h>
+#include <cassert>    // or <assert.h>
+
 
 #define STACK_SIZE 4096
 
@@ -12,8 +14,8 @@
 typedef unsigned long address_t;
 #else
 #define JB_SP 4
-    #define JB_PC 5
-    typedef unsigned int address_t;
+#define JB_PC 5
+typedef unsigned int address_t;
 #endif
 
 
@@ -22,29 +24,35 @@ enum ThreadState { READY, RUNNING, BLOCKED };
 
 class Thread {
 
-private:
-    int id;
-    ThreadState state;
-    sigjmp_buf env;
-    char* stack;
-    int quantumCount;
+ private:
+  sigjmp_buf env{};
+  int id;
+  ThreadState state;
+  char* stack;
+  int quantumCount;
+  bool didUserBlock;
 
-    static address_t translate_address(address_t addr);
+  static address_t translate_address(address_t addr);
 
-public:
-    Thread(int id, void (*entryPoint)());
+ public:
+  Thread(int id, void (*entryPoint)());
 
-    ~Thread();
+  ~Thread();
 
-    ThreadState getState() const;
+  ThreadState getState() const;
 
-    void setState(ThreadState newState);
+  void setState(ThreadState newState);
 
-    sigjmp_buf& getEnv();
+  sigjmp_buf& getEnv();
 
-    int getQuantumCount() const;
+  int getQuantumCount() const;
 
-    void incrementQuantumCount();
+  void incrementQuantumCount();
+
+  bool isUserBlocked() const;
+
+  void setBlockFlag(bool shouldSleep);
+
 };
 
 #endif // THREAD_H
