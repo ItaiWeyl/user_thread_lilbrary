@@ -163,6 +163,12 @@ void Scheduler::prepareExit()
 
 void Scheduler::jumpToNextThread() {
   int nextTid = readyQueue.front();
+  cleanupPendingThreads();
+  if (!threads.count(nextTid)) {
+    std::cerr << "[ERROR] nextTid " << nextTid << " was deleted during cleanup!" << std::endl;
+    safeExit();
+  }
+  std::cout << "[CLEANUP] Cleaning up threads before jumping to " << nextTid << std::endl;
   readyQueue.pop();
   currentTid = nextTid;
   threads[currentTid]->setState(RUNNING);
@@ -170,19 +176,26 @@ void Scheduler::jumpToNextThread() {
   totalQuantums++;
   setupTimer();
   unblockTimerSignal();
+  std::cout << "[CTXSW] Jumping to thread " << currentTid << std::endl;
   siglongjmp(threads[currentTid]->getEnv(), 1);
 }
 
 void Scheduler::cleanupPendingThreads() {
+  std::queue<int> tempQueue;
+
   while (!pendingDeletionQueue.empty()) {
     int toDelete = pendingDeletionQueue.front();
     pendingDeletionQueue.pop();
 
-    if (threads.count(toDelete)) {
+    if (toDelete == currentTid) {
+      tempQueue.push(toDelete);
+    } else if (threads.count(toDelete)) {
       delete threads[toDelete];
       threads.erase(toDelete);
     }
   }
+
+  pendingDeletionQueue = tempQueue;
 }
 
 // **************************** Implementation of the Scheduler API ****************************************************
@@ -255,9 +268,13 @@ int Scheduler::terminate(int tid) {
 
   // For self-termination, we need to ensure the thread's resources aren't cleaned up
   // until after we've switched away from it
-  pendingDeletionQueue.push(currentTid);
-  lastPendingDeleteId = currentTid;
-  threads[currentTid]->setState(READY);
+  if (threads.count(currentTid)) {
+    pendingDeletionQueue.push(currentTid);
+    lastPendingDeleteId = currentTid;
+    threads[currentTid]->setState(READY);
+  } else {
+    std::cerr << "[ERROR] currentTid already deleted or invalid in terminate()" << std::endl;
+  }
   unblockTimerSignal();  // Unblock before context switch
   doContextSwitch();
   return 0;
@@ -352,19 +369,25 @@ void Scheduler::doContextSwitch() {
   blockTimerSignal();
 
   if (lastPendingDeleteId != currentTid &&
+      threads.count(currentTid) > 0 &&
       threads.size() > 1 &&
       threads[currentTid]->getState() == RUNNING) {
     threads[currentTid]->setState(READY);
     readyQueue.push(currentTid);
   }
-
+  std::cout << "[CTXSW] Saving context of thread " << currentTid << std::endl;
   int ret_val = sigsetjmp(threads[currentTid]->getEnv(), 1);
   if (ret_val != 0) {
+    std::cout << "[CTXSW] Returned to thread " << currentTid << " after context switch" << std::endl;
     if (shouldExit && currentTid == 0) {
       safeExit();
     }
-    if (lastPendingDeleteId != -1){
-      cleanupPendingThreads();
+    if (lastPendingDeleteId != -1) {
+      if (threads.count(lastPendingDeleteId)) {
+        pendingDeletionQueue.push(lastPendingDeleteId);
+      } else {
+        std::cerr << "[ERROR] Tried to postpone deletion of invalid thread ID: " << lastPendingDeleteId << std::endl;
+      }
       lastPendingDeleteId = -1;
     }
     unblockTimerSignal();

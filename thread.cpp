@@ -48,9 +48,11 @@ Thread::Thread(int id, void (*entryPoint)()) :
 }
 
 Thread::~Thread() {
+  std::cout << ">>> DESTRUCTOR start for thread " << id << std::endl;
   if (id != 0 && stack != nullptr) {
     delete[] stack;
   }
+  std::cout << "<<< DESTRUCTOR done for thread " << id << std::endl;
 }
 
 ThreadState Thread::getState() const {
