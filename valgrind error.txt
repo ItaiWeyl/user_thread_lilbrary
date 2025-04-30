@@ -1,0 +1,343 @@
+==2717632== Memcheck, a memory error detector
+==2717632== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==2717632== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
+==2717632== Command: ./test3
+==2717632==
+==2717632== Warning: client switching stacks?  SP change: 0x1ffeffefd8 --> 0x4d87288
+==2717632==          to suppress, use: --max-stackframe=137340878160 or greater
+==2717632== Invalid read of size 4
+==2717632==    at 0x112228: std::equal_to<int>::operator()(int const&, int const&) const (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x110451: std::__detail::_Hashtable_base<int, std::pair<int const, Thread*>, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Hashtable_traits<false, false, true> >::_M_key_equals(int const&, std::__detail::_Hash_node_value<std::pair<int const, Thread*>, false> const&) const (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1122AD: std::__detail::_Hashtable_base<int, std::pair<int const, Thread*>, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Hashtable_traits<false, false, true> >::_M_equals(int const&, unsigned long, std::__detail::_Hash_node_value<std::pair<int const, Thread*>, false> const&) const (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x11058E: std::_Hashtable<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_find_before_node(unsigned long, int const&, unsigned long) const (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10E8A5: std::_Hashtable<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_find_node(unsigned long, int const&, unsigned long) const (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10E79B: std::_Hashtable<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::find(int const&) const (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10CB6C: std::_Hashtable<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::count(int const&) const (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10BCE4: std::unordered_map<int, Thread*, std::hash<int>, std::equal_to<int>, std::allocator<std::pair<int const, Thread*> > >::count(int const&) const (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10B190: Scheduler::getThreadById(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114A3E: uthread_block(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114CE1: f() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==  Address 0x4d872d8 is 8 bytes inside a block of size 24 alloc'd
+==2717632==    at 0x4840F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==2717632==    by 0x11306A: std::__new_allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> >::allocate(unsigned long, void const*) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x112301: std::allocator_traits<std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> > >::allocate(std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> >&, unsigned long) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1106A3: std::__detail::_Hash_node<std::pair<int const, Thread*>, false>* std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> > >::_M_allocate_node<std::piecewise_construct_t const&, std::tuple<int const&>, std::tuple<> >(std::piecewise_construct_t const&, std::tuple<int const&>&&, std::tuple<>&&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10E952: std::_Hashtable<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_Scoped_node::_Scoped_node<std::piecewise_construct_t const&, std::tuple<int const&>, std::tuple<> >(std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> > >*, std::piecewise_construct_t const&, std::tuple<int const&>&&, std::tuple<>&&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10CCB3: std::__detail::_Map_base<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](int const&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10BD82: std::unordered_map<int, Thread*, std::hash<int>, std::equal_to<int>, std::allocator<std::pair<int const, Thread*> > >::operator[](int const&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10AA64: Scheduler::spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114901: uthread_spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D18: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== Invalid read of size 8
+==2717632==    at 0x10B1B8: Scheduler::getThreadById(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114A3E: uthread_block(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114CE1: f() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==  Address 0x4d872e0 is 16 bytes inside a block of size 24 alloc'd
+==2717632==    at 0x4840F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==2717632==    by 0x11306A: std::__new_allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> >::allocate(unsigned long, void const*) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x112301: std::allocator_traits<std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> > >::allocate(std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> >&, unsigned long) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1106A3: std::__detail::_Hash_node<std::pair<int const, Thread*>, false>* std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> > >::_M_allocate_node<std::piecewise_construct_t const&, std::tuple<int const&>, std::tuple<> >(std::piecewise_construct_t const&, std::tuple<int const&>&&, std::tuple<>&&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10E952: std::_Hashtable<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_Scoped_node::_Scoped_node<std::piecewise_construct_t const&, std::tuple<int const&>, std::tuple<> >(std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> > >*, std::piecewise_construct_t const&, std::tuple<int const&>&&, std::tuple<>&&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10CCB3: std::__detail::_Map_base<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](int const&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10BD82: std::unordered_map<int, Thread*, std::hash<int>, std::equal_to<int>, std::allocator<std::pair<int const, Thread*> > >::operator[](int const&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10AA64: Scheduler::spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114901: uthread_spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D18: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== Invalid read of size 8
+==2717632==    at 0x10ACBF: Scheduler::block(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114A94: uthread_block(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114CE1: f() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==  Address 0x4d872e0 is 16 bytes inside a block of size 24 alloc'd
+==2717632==    at 0x4840F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==2717632==    by 0x11306A: std::__new_allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> >::allocate(unsigned long, void const*) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x112301: std::allocator_traits<std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> > >::allocate(std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> >&, unsigned long) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1106A3: std::__detail::_Hash_node<std::pair<int const, Thread*>, false>* std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> > >::_M_allocate_node<std::piecewise_construct_t const&, std::tuple<int const&>, std::tuple<> >(std::piecewise_construct_t const&, std::tuple<int const&>&&, std::tuple<>&&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10E952: std::_Hashtable<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_Scoped_node::_Scoped_node<std::piecewise_construct_t const&, std::tuple<int const&>, std::tuple<> >(std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> > >*, std::piecewise_construct_t const&, std::tuple<int const&>&&, std::tuple<>&&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10CCB3: std::__detail::_Map_base<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](int const&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10BD82: std::unordered_map<int, Thread*, std::hash<int>, std::equal_to<int>, std::allocator<std::pair<int const, Thread*> > >::operator[](int const&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10AA64: Scheduler::spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114901: uthread_spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D18: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== Invalid read of size 4
+==2717632==    at 0x114794: Thread::getState() const (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10ABA8: Scheduler::terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1149AD: uthread_terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114CED: f() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==  Address 0x4d87334 is 4 bytes inside a block of size 224 alloc'd
+==2717632==    at 0x4840F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==2717632==    by 0x10AA30: Scheduler::spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114901: uthread_spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D27: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== Invalid write of size 8
+==2717632==    at 0x4AEACF0: __sigsetjmp (setjmp.S:32)
+==2717632==    by 0x10B028: Scheduler::doContextSwitch() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10AC92: Scheduler::terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1149AD: uthread_terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114CED: f() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==  Address 0x4d87338 is 8 bytes inside a block of size 224 alloc'd
+==2717632==    at 0x4840F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==2717632==    by 0x10AA30: Scheduler::spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114901: uthread_spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D27: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== Invalid write of size 8
+==2717632==    at 0x4AEAD03: __sigsetjmp (setjmp.S:43)
+==2717632==    by 0x10B028: Scheduler::doContextSwitch() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10AC92: Scheduler::terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1149AD: uthread_terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114CED: f() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==  Address 0x4d87340 is 16 bytes inside a block of size 224 alloc'd
+==2717632==    at 0x4840F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==2717632==    by 0x10AA30: Scheduler::spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114901: uthread_spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D27: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== Invalid write of size 8
+==2717632==    at 0x4AEAD07: __sigsetjmp (setjmp.S:47)
+==2717632==    by 0x10B028: Scheduler::doContextSwitch() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10AC92: Scheduler::terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1149AD: uthread_terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114CED: f() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==  Address 0x4d87348 is 24 bytes inside a block of size 224 alloc'd
+==2717632==    at 0x4840F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==2717632==    by 0x10AA30: Scheduler::spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114901: uthread_spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D27: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== Invalid write of size 8
+==2717632==    at 0x4AEAD0B: __sigsetjmp (setjmp.S:48)
+==2717632==    by 0x10B028: Scheduler::doContextSwitch() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10AC92: Scheduler::terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1149AD: uthread_terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114CED: f() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==  Address 0x4d87350 is 32 bytes inside a block of size 224 alloc'd
+==2717632==    at 0x4840F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==2717632==    by 0x10AA30: Scheduler::spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114901: uthread_spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D27: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== Invalid write of size 8
+==2717632==    at 0x4AEAD0F: __sigsetjmp (setjmp.S:49)
+==2717632==    by 0x10B028: Scheduler::doContextSwitch() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10AC92: Scheduler::terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1149AD: uthread_terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114CED: f() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==  Address 0x4d87358 is 40 bytes inside a block of size 224 alloc'd
+==2717632==    at 0x4840F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==2717632==    by 0x10AA30: Scheduler::spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114901: uthread_spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D27: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== Invalid write of size 8
+==2717632==    at 0x4AEAD13: __sigsetjmp (setjmp.S:50)
+==2717632==    by 0x10B028: Scheduler::doContextSwitch() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10AC92: Scheduler::terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1149AD: uthread_terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114CED: f() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==  Address 0x4d87360 is 48 bytes inside a block of size 224 alloc'd
+==2717632==    at 0x4840F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==2717632==    by 0x10AA30: Scheduler::spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114901: uthread_spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D27: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== Invalid write of size 8
+==2717632==    at 0x4AEAD29: __sigsetjmp (setjmp.S:55)
+==2717632==    by 0x10B028: Scheduler::doContextSwitch() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10AC92: Scheduler::terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1149AD: uthread_terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114CED: f() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==  Address 0x4d87368 is 56 bytes inside a block of size 224 alloc'd
+==2717632==    at 0x4840F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==2717632==    by 0x10AA30: Scheduler::spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114901: uthread_spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D27: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== Invalid write of size 8
+==2717632==    at 0x4AEAD3E: __sigsetjmp (setjmp.S:61)
+==2717632==    by 0x10B028: Scheduler::doContextSwitch() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10AC92: Scheduler::terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1149AD: uthread_terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114CED: f() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==  Address 0x4d87370 is 64 bytes inside a block of size 224 alloc'd
+==2717632==    at 0x4840F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==2717632==    by 0x10AA30: Scheduler::spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114901: uthread_spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D27: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== Syscall param rt_sigprocmask(oldset) points to unaddressable byte(s)
+==2717632==    at 0x4B3ED14: pthread_sigmask@@GLIBC_2.32 (pthread_sigmask.c:45)
+==2717632==    by 0x4AEB238: sigprocmask (sigprocmask.c:25)
+==2717632==    by 0x4AEAD6C: __sigjmp_save (sigjmp.c:30)
+==2717632==    by 0x10B028: Scheduler::doContextSwitch() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10AC92: Scheduler::terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1149AD: uthread_terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114CED: f() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==  Address 0x4d87380 is 80 bytes inside a block of size 224 alloc'd
+==2717632==    at 0x4840F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==2717632==    by 0x10AA30: Scheduler::spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114901: uthread_spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D27: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== Invalid write of size 4
+==2717632==    at 0x4AEAD77: __sigjmp_save (sigjmp.c:29)
+==2717632==    by 0x10B028: Scheduler::doContextSwitch() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10AC92: Scheduler::terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1149AD: uthread_terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114CED: f() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==  Address 0x4d87378 is 72 bytes inside a block of size 224 alloc'd
+==2717632==    at 0x4840F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==2717632==    by 0x10AA30: Scheduler::spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114901: uthread_spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D27: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== Invalid read of size 8
+==2717632==    at 0x11056C: std::_Hashtable<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_find_before_node(unsigned long, int const&, unsigned long) const (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10E8A5: std::_Hashtable<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_find_node(unsigned long, int const&, unsigned long) const (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10CC54: std::__detail::_Map_base<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](int const&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10BD82: std::unordered_map<int, Thread*, std::hash<int>, std::equal_to<int>, std::allocator<std::pair<int const, Thread*> > >::operator[](int const&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10B0DF: Scheduler::doContextSwitch() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10AC92: Scheduler::terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1149AD: uthread_terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114CED: f() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==  Address 0x4d872d0 is 0 bytes inside a block of size 24 alloc'd
+==2717632==    at 0x4840F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==2717632==    by 0x11306A: std::__new_allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> >::allocate(unsigned long, void const*) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x112301: std::allocator_traits<std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> > >::allocate(std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> >&, unsigned long) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1106A3: std::__detail::_Hash_node<std::pair<int const, Thread*>, false>* std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> > >::_M_allocate_node<std::piecewise_construct_t const&, std::tuple<int const&>, std::tuple<> >(std::piecewise_construct_t const&, std::tuple<int const&>&&, std::tuple<>&&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10E952: std::_Hashtable<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_Scoped_node::_Scoped_node<std::piecewise_construct_t const&, std::tuple<int const&>, std::tuple<> >(std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> > >*, std::piecewise_construct_t const&, std::tuple<int const&>&&, std::tuple<>&&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10CCB3: std::__detail::_Map_base<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](int const&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10BD82: std::unordered_map<int, Thread*, std::hash<int>, std::equal_to<int>, std::allocator<std::pair<int const, Thread*> > >::operator[](int const&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10AA64: Scheduler::spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114901: uthread_spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D18: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== Invalid read of size 8
+==2717632==    at 0x10E8B5: std::_Hashtable<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_find_node(unsigned long, int const&, unsigned long) const (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10CC54: std::__detail::_Map_base<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](int const&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10BD82: std::unordered_map<int, Thread*, std::hash<int>, std::equal_to<int>, std::allocator<std::pair<int const, Thread*> > >::operator[](int const&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10B0DF: Scheduler::doContextSwitch() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10AC92: Scheduler::terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1149AD: uthread_terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114CED: f() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==  Address 0x4d872d0 is 0 bytes inside a block of size 24 alloc'd
+==2717632==    at 0x4840F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==2717632==    by 0x11306A: std::__new_allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> >::allocate(unsigned long, void const*) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x112301: std::allocator_traits<std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> > >::allocate(std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> >&, unsigned long) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1106A3: std::__detail::_Hash_node<std::pair<int const, Thread*>, false>* std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> > >::_M_allocate_node<std::piecewise_construct_t const&, std::tuple<int const&>, std::tuple<> >(std::piecewise_construct_t const&, std::tuple<int const&>&&, std::tuple<>&&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10E952: std::_Hashtable<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_Scoped_node::_Scoped_node<std::piecewise_construct_t const&, std::tuple<int const&>, std::tuple<> >(std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> > >*, std::piecewise_construct_t const&, std::tuple<int const&>&&, std::tuple<>&&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10CCB3: std::__detail::_Map_base<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](int const&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10BD82: std::unordered_map<int, Thread*, std::hash<int>, std::equal_to<int>, std::allocator<std::pair<int const, Thread*> > >::operator[](int const&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10AA64: Scheduler::spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114901: uthread_spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D18: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== Invalid read of size 8
+==2717632==    at 0x10E8B5: std::_Hashtable<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_find_node(unsigned long, int const&, unsigned long) const (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10CC54: std::__detail::_Map_base<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](int const&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10BD82: std::unordered_map<int, Thread*, std::hash<int>, std::equal_to<int>, std::allocator<std::pair<int const, Thread*> > >::operator[](int const&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10B108: Scheduler::doContextSwitch() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10AC92: Scheduler::terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1149AD: uthread_terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114CED: f() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==  Address 0x4d872d0 is 0 bytes inside a block of size 24 alloc'd
+==2717632==    at 0x4840F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==2717632==    by 0x11306A: std::__new_allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> >::allocate(unsigned long, void const*) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x112301: std::allocator_traits<std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> > >::allocate(std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> >&, unsigned long) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1106A3: std::__detail::_Hash_node<std::pair<int const, Thread*>, false>* std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> > >::_M_allocate_node<std::piecewise_construct_t const&, std::tuple<int const&>, std::tuple<> >(std::piecewise_construct_t const&, std::tuple<int const&>&&, std::tuple<>&&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10E952: std::_Hashtable<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_Scoped_node::_Scoped_node<std::piecewise_construct_t const&, std::tuple<int const&>, std::tuple<> >(std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> > >*, std::piecewise_construct_t const&, std::tuple<int const&>&&, std::tuple<>&&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10CCB3: std::__detail::_Map_base<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](int const&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10BD82: std::unordered_map<int, Thread*, std::hash<int>, std::equal_to<int>, std::allocator<std::pair<int const, Thread*> > >::operator[](int const&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10AA64: Scheduler::spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114901: uthread_spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D18: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== Invalid read of size 8
+==2717632==    at 0x10E8B5: std::_Hashtable<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_find_node(unsigned long, int const&, unsigned long) const (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10CC54: std::__detail::_Map_base<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](int const&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10BD82: std::unordered_map<int, Thread*, std::hash<int>, std::equal_to<int>, std::allocator<std::pair<int const, Thread*> > >::operator[](int const&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10B145: Scheduler::doContextSwitch() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10AC92: Scheduler::terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1149AD: uthread_terminate(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114CED: f() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==  Address 0x4d872d0 is 0 bytes inside a block of size 24 alloc'd
+==2717632==    at 0x4840F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==2717632==    by 0x11306A: std::__new_allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> >::allocate(unsigned long, void const*) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x112301: std::allocator_traits<std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> > >::allocate(std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> >&, unsigned long) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1106A3: std::__detail::_Hash_node<std::pair<int const, Thread*>, false>* std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> > >::_M_allocate_node<std::piecewise_construct_t const&, std::tuple<int const&>, std::tuple<> >(std::piecewise_construct_t const&, std::tuple<int const&>&&, std::tuple<>&&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10E952: std::_Hashtable<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_Scoped_node::_Scoped_node<std::piecewise_construct_t const&, std::tuple<int const&>, std::tuple<> >(std::__detail::_Hashtable_alloc<std::allocator<std::__detail::_Hash_node<std::pair<int const, Thread*>, false> > >*, std::piecewise_construct_t const&, std::tuple<int const&>&&, std::tuple<>&&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10CCB3: std::__detail::_Map_base<int, std::pair<int const, Thread*>, std::allocator<std::pair<int const, Thread*> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](int const&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10BD82: std::unordered_map<int, Thread*, std::hash<int>, std::equal_to<int>, std::allocator<std::pair<int const, Thread*> > >::operator[](int const&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10AA64: Scheduler::spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114901: uthread_spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D18: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== Warning: client switching stacks?  SP change: 0x4d88378 --> 0x1ffefff000
+==2717632==          to suppress, use: --max-stackframe=137340873864 or greater
+==2717632== Invalid read of size 4
+==2717632==    at 0x11474C: Thread::~Thread() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10B065: Scheduler::doContextSwitch() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10A594: Scheduler::timerHandler(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x4AEB04F: ??? (in /usr/lib/x86_64-linux-gnu/libc.so.6)
+==2717632==    by 0x4AEB266: kill (syscall-template.S:120)
+==2717632==    by 0x114D38: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==  Address 0x4d87330 is 0 bytes inside a block of size 224 alloc'd
+==2717632==    at 0x4840F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==2717632==    by 0x10AA30: Scheduler::spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114901: uthread_spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D27: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== Invalid read of size 8
+==2717632==    at 0x114756: Thread::~Thread() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10B065: Scheduler::doContextSwitch() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10A594: Scheduler::timerHandler(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x4AEB04F: ??? (in /usr/lib/x86_64-linux-gnu/libc.so.6)
+==2717632==    by 0x4AEB266: kill (syscall-template.S:120)
+==2717632==    by 0x114D38: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==  Address 0x4d87400 is 208 bytes inside a block of size 224 alloc'd
+==2717632==    at 0x4840F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==2717632==    by 0x10AA30: Scheduler::spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114901: uthread_spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D27: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== Invalid read of size 8
+==2717632==    at 0x114766: Thread::~Thread() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10B065: Scheduler::doContextSwitch() (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10A594: Scheduler::timerHandler(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x4AEB04F: ??? (in /usr/lib/x86_64-linux-gnu/libc.so.6)
+==2717632==    by 0x4AEB266: kill (syscall-template.S:120)
+==2717632==    by 0x114D38: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+t>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](int&&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10BDF7: std::unordered_map<int, Thread*, std::hash<int>, std::equal_to<int>, std::allocator<std::pair<int const, Thread*> > >::operator[](int&&) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10A95C: Scheduler::init(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x1148AD: uthread_init(int) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D09: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== 4,096 bytes in 1 blocks are definitely lost in loss record 12 of 14
+==2717632==    at 0x4842A94: operator new[](unsigned long, std::nothrow_t const&) (vg_replace_malloc.c:747)
+==2717632==    by 0x11469A: Thread::Thread(int, void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x10AA4A: Scheduler::spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114901: uthread_spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D27: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== 4,320 (224 direct, 4,096 indirect) bytes in 1 blocks are definitely lost in loss record 13 of 14
+==2717632==    at 0x4840F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==2717632==    by 0x10AA30: Scheduler::spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114901: uthread_spawn(void (*)()) (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==    by 0x114D18: main (in /cs/usr/itai.weyl/Documents/OS/ex2/test3)
+==2717632==
+==2717632== LEAK SUMMARY:
+==2717632==    definitely lost: 4,368 bytes in 4 blocks
+==2717632==    indirectly lost: 4,320 bytes in 2 blocks
+==2717632==      possibly lost: 0 bytes in 0 blocks
+==2717632==    still reachable: 74,552 bytes in 8 blocks
+==2717632==         suppressed: 0 bytes in 0 blocks
+==2717632== Reachable blocks (those to which a pointer was found) are not shown.
+==2717632== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==2717632==
+==2717632== For lists of detected and suppressed errors, rerun with: -s
+==2717632== ERROR SUMMARY: 39 errors from 33 contexts (suppressed: 0 from 0)
+zsh: segmentation fault  valgrind --leak-check=full ./test3
