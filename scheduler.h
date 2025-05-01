@@ -1,13 +1,7 @@
-//
-// Created by dvirs on 4/22/2025.
-//
-
 #ifndef _SCHEDULER_H_
 #define _SCHEDULER_H_
-
 #include "thread.h"
-#include <unordered_map>
-#include <queue>
+#define MAX_THREAD_NUM 100
 
 class Scheduler {
 private:
@@ -21,10 +15,16 @@ private:
 
     static int quantumUsecs;
     static int totalQuantums;
-    static std::unordered_map<int, Thread*> threads;
-    static std::queue<int> readyQueue;
-    static std::unordered_map<int, int> sleepingThreads;
+    static bool shouldExit;
+    static Thread* threads[MAX_THREAD_NUM];
+    static int readyQueue[MAX_THREAD_NUM];
+    static int readyFront, readyBack;
+    static int sleepUntil[MAX_THREAD_NUM]; // 0 means not sleeping
+    static int pendingDeletionQueue[MAX_THREAD_NUM];
+    static int pendingDeletionSize;
     static int currentTid;
+    static int lastPendingDeleteId;
+
 
 public:
     static int init(int quantumUsecs);
@@ -35,14 +35,14 @@ public:
     static int sleep(int numQuantums);
     static void timerHandler(int sig);
     static void doContextSwitch();
-
     static int getTid();
     static int getTotalQuantums();
     static int getQuantums(int tid);
-    static int pendingDeletionTid;
     static Thread *getThreadById (int tid);
-
-    static void debugPrintThreads();
+    static void safeExit ();
+    static void prepareExit ();
+    static void jumpToNextThread ();
+    static void cleanupPendingThreads ();
 };
 
 #endif //_SCHEDULER_H_

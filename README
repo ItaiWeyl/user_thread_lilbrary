@@ -46,3 +46,10 @@ OS: The OS handles the system call, finds the target process (Shotwell), and del
 SIGTERM signal to it.
 Application (process): When Shotwell gets the SIGTERM signal, the OS checks if it used sigaction to
 set a handler. If it did, it runs custom code. if not, it just quits by default.
+
+Q5:
+Real time is the actual time that passes in the real world, like seconds on a clock, while virtual time is
+measured by the program using logical units, like counting how many quantums a thread gets to run. They
+differ because real time depends on the clock, and virtual time depends on logical units inside the program.
+For example, real time is how many seconds it takes a program to finish, and virtual time is how many
+quantums a thread used before it was stopped.

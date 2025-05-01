@@ -8,8 +8,8 @@ address_t Thread::translate_address(address_t addr) {
     address_t ret;
     asm volatile("xor    %%fs:0x30,%0\n"
                  "rol    $0x11,%0\n"
-                 : "=g" (ret)
-                 : "0" (addr));
+        : "=g" (ret)
+        : "0" (addr));
     return ret;
 #else
     address_t ret;
